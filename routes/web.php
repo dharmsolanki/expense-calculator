@@ -15,7 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [AuthController::class, 'index']);
-Route::post('/signup', [AuthController::class, 'signUp'])->name('signup');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/', 'index');
+    Route::post('/signup', 'signUp')->name('signup');
+    Route::post('/login', 'login')->name('login');
+});
+
+Route::controller(DashboardController::class)->group(function () {
+    Route::get('/dashboard', 'index')->name('dashboard');
+    Route::get('dashboard/create', 'create')->name('addExpense');
+});
