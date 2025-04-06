@@ -17,11 +17,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('/', 'index');
-    Route::post('/signup', 'signUp')->name('signup');
-    Route::post('/login', 'login')->name('login');
+    Route::match(['get', 'post'], '/signup', 'signUp')->name('signup');
+    Route::match(['get', 'post'], '/login', 'login')->name('login');
+    
 });
 
-Route::controller(DashboardController::class)->group(function () {
-    Route::get('/dashboard', 'index')->name('dashboard');
-    Route::get('dashboard/create', 'create')->name('addExpense');
+Route::middleware(['auth'])->group(function () {
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/dashboard', 'index')->name('dashboard');
+        Route::match(['get', 'post'], 'dashboard/create', 'create')->name('addExpense');
+    });
+
+    Route::match(['get', 'post'], '/logout', [AuthController::class,'logout'])->name('logout');
 });

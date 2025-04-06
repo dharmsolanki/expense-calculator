@@ -73,4 +73,12 @@ class AuthController extends Controller
 
         return view('welcome')->with('error', 'Invalid Request Method');
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/'); // or wherever you want
+    }
 }

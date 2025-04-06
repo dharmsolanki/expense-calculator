@@ -87,7 +87,14 @@
         <a href="#"><i class="fas fa-home"></i> Home</a>
         <a href="#"><i class="fas fa-user"></i> Profile</a>
         <a href="#"><i class="fas fa-cogs"></i> Settings</a>
-        <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a href="/logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+        
     </div>
 
     <!-- Main Content -->

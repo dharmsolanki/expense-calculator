@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Slide Navbar</title>
+    <title>Register</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
