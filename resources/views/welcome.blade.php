@@ -63,7 +63,7 @@
                 @endif
 
                 <input type="hidden" name="_form" value="signup"> <!-- Identify which form was submitted -->
-                <button type="submit">Sign up</button>
+                <button type="submit" class="form-btn">Sign up</button>
             </form>
         </div>
 
@@ -83,7 +83,7 @@
                 @endif
 
                 <input type="hidden" name="_form" value="login"> <!-- Identify which form was submitted -->
-                <button type="submit">Login</button>
+                <button type="submit" class="form-btn">Login</button>
             </form>
 
         </div>
