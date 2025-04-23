@@ -71,6 +71,11 @@ class AuthController extends Controller
             return back()->with('error', 'Invalid email or password.');
         }
 
+        // if user already loggedin
+        if(auth()->check()) {
+            return redirect()->route('dashboard');
+        }
+
         return view('welcome')->with('error', 'Invalid Request Method');
     }
 

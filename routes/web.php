@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('dashboard');
         Route::match(['get', 'post'], 'dashboard/create', 'create')->name('addExpense');
+        Route::get('dashboard/view-expense','view')->name('viewExpense');
     });
 
     Route::match(['get', 'post'], '/logout', [AuthController::class,'logout'])->name('logout');

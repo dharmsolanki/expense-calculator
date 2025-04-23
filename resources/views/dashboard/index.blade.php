@@ -3,6 +3,28 @@
 @section('title', 'Dashboard')
 
 @section('content')
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: "{{ session('success') }}",
+                showConfirmButton: true,
+                timer: 3000
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "{{ session('error') }}",
+                showConfirmButton: true
+            });
+        </script>
+    @endif
     <h2>Dashboard Overview</h2>
     <div class="row">
         <div class="col-md-4">

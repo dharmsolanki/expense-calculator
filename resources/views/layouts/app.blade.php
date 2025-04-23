@@ -6,6 +6,7 @@
     <title>@yield('title', 'Dashboard')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* Sidebar Styling */
         .sidebar {
@@ -86,8 +87,9 @@
         <h4 class="text-center">Dashboard</h4>
         <a href="#"><i class="fas fa-home"></i> Home</a>
         <a href="#"><i class="fas fa-user"></i> Profile</a>
-        <a href="#"><i class="fas fa-cogs"></i> Settings</a>
-        <a href="/logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <a href="{{route('addExpense')}}"><i class="fas fa-cogs"></i> Add Expense</a>
+        <a href="{{route('viewExpense')}}"><i class="fas fa-cogs"></i> View Expense</a>
+        <a href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="fas fa-sign-out-alt"></i> Logout
         </a>
         
