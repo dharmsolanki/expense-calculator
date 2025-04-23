@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('expense_name',255)->nullable();
             $table->string('payment_method',20);
             $table->date('expense_date');
-            $table->bigInteger('expence_amount');
+            $table->bigInteger('expense_amount');
             $table->string('expense_description',255);
             $table->timestamps();
         });
