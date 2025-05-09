@@ -40,12 +40,64 @@ class DashboardController extends Controller
         return view('dashboard.create');
     }
 
-    public function view() {
+    public function view(Request $request) {
         
-        $expenses = ExpenseData::all();
+        $query = ExpenseData::query();
+
+        if ($request->filled('category')) {
+            $query->where('expense_category', $request->category);
+        }
+    
+        if ($request->filled('payment_method')) {
+            $query->where('payment_method', $request->payment_method);
+        }
+    
+        if ($request->filled('from_date')) {
+            $query->whereDate('expense_date', '>=', $request->from_date);
+        }
+    
+        if ($request->filled('to_date')) {
+            $query->whereDate('expense_date', '<=', $request->to_date);
+        }
+
+        $expenses = $query->orderBy('expense_date', 'desc')->get();
+
         return view('dashboard.view-expense', [
             'expenses' => $expenses
         ]);
 
     }
+
+    public function edit(Request $request, $id)
+    {
+        $expense = ExpenseData::findOrFail($id);
+    
+        if ($request->isMethod('post')) {
+            $validated = $request->validate([
+                'category' => 'required',
+                'expense_name' => 'required_if:category,Other',
+                'payment_method' => 'required',
+                'date' => 'required',
+                'amount' => 'required|numeric',
+                'description' => 'required',
+            ]);
+    
+            // ✅ Correct usage: calling update on the model instance
+            $expense->update([
+                'expense_category' => $validated['category'],
+                'expense_name' => $validated['expense_name'],
+                'payment_method' => $validated['payment_method'],
+                'expense_date' => $validated['date'],
+                'expense_amount' => $validated['amount'],
+                'expense_description' => $validated['description'],
+            ]);
+    
+            return redirect('dashboard/view-expense')->with('success', 'Expense Updated Successfully!');
+        }
+    
+        return view('dashboard.create', [
+            'expense' => $expense
+        ]);
+    }
+    
 }

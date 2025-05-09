@@ -78,14 +78,13 @@
             <button class="navbar-toggler text-white" type="button" id="menu-toggle">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand text-white ms-3" href="#">Dashboard</a>
+            <a class="navbar-brand text-white ms-3" href="{{route("dashboard")}}">Dashboard</a>
         </div>
     </nav>
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <h4 class="text-center">Dashboard</h4>
-        <a href="#"><i class="fas fa-home"></i> Home</a>
+        <a href="{{route("dashboard")}}"><i class="fas fa-home"></i> Home</a>
         <a href="#"><i class="fas fa-user"></i> Profile</a>
         <a href="{{route('addExpense')}}"><i class="fas fa-cogs"></i> Add Expense</a>
         <a href="{{route('viewExpense')}}"><i class="fas fa-cogs"></i> View Expense</a>
