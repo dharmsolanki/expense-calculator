@@ -3,13 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExpenseData;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard.index')->with('success', 'Login Successfully');
+        $userId = Auth::id();
+        $users = User::where('id','!=','1')->get();
+
+        if($userId == User::ADMIN_USER_ID) {
+            $total_expense = ExpenseData::sum('expense_amount');
+        }
+        else {
+            $total_expense = ExpenseData::where('user_id',$userId)->sum('expense_amount');
+        }
+
+        return view('dashboard.index',[
+            'users' => $users,
+            'total_expense' => $total_expense
+        ])->with('success', 'Login Successfully');
     }
 
     public function create(Request $request) {
@@ -26,7 +41,10 @@ class DashboardController extends Controller
                 ]
             );
 
+            $userId = Auth::id();
+
             ExpenseData::create([
+                'user_id' => $userId,
                 'expense_category' => $validated['category'],
                 'expense_name' => $validated['expense_name'],
                 'payment_method' => $validated['payment_method'],
@@ -42,7 +60,13 @@ class DashboardController extends Controller
 
     public function view(Request $request) {
         
-        $query = ExpenseData::query();
+        $userId = Auth::id();
+        if($userId == User::ADMIN_USER_ID) {
+            $query = ExpenseData::query();
+        }
+        else {
+            $query = ExpenseData::where('user_id', $userId);
+        }
 
         if ($request->filled('category')) {
             $query->where('expense_category', $request->category);

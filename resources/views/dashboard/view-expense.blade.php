@@ -54,7 +54,7 @@
                                 {{-- in Laravel Blade, $loop is a special variable available only inside @foreach loops --}}
                                 <td>{{ $loop->iteration }}</td> 
                                 <td>{{ $expense->expense_category }}</td>
-                                <td>{{ $expense->expense_name }}</td>
+                                <td>{{ $expense->expense_name ?? "-" }}</td>
                                 <td><strong>₹{{ number_format($expense->expense_amount, 2) }}</strong></td>
                                 <td>{{ $expense->payment_method }}</td>
                                 <td>{{ \Carbon\Carbon::parse($expense->expense_date)->format('d-m-Y') }}                                </td>
