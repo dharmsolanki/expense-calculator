@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\RolesController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,11 +31,18 @@ Route::middleware(['auth'])->group(function () {
         Route::match(['get', 'post'],'dashboard/edit-expense/{id}', 'edit')->name('editExpense');
     });
 
-    Route::controller(RolesController::class)->group(function() {
-        Route::get('/add-role','index')->name('addRole');
-        Route::match(['get', 'post'],'/create-role','create')->name('roles.create');
-        Route::match(['get','post'], '/edit-role/{id}','edit')->name('roles.edit');
+    Route::middleware(['auth', 'checkUserRole:1'])->controller(RolesController::class)->group(function () {
+        Route::get('dashboard/add-role','index')->name('addRole');
+        Route::match(['get', 'post'],'dashboard/create-role','create')->name('roles.create');
+        Route::match(['get','post'], 'dashboard/edit-role/{id}','edit')->name('roles.edit');
     });
+
+    Route::middleware(['auth', 'checkUserRole:1'])->controller(MenuController::class)->group(function () {
+        Route::get('dashboard/add-menu','index')->name('addMenu');
+        Route::match(['get', 'post'],'dashboard/create-menu','create')->name('menu.create');
+        Route::match(['get', 'post'],'dashboard/edit-menu/{id}','edit')->name('menu.edit');
+    });
+    
 
     Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
 });
