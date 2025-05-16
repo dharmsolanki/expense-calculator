@@ -52,5 +52,6 @@ Route::middleware(['auth'])->group(function () {
     });
     
 
+    Route::match(['get','post'],'dashboard/change-password',[UsersController::class, 'changePassword'])->name("changePassword");
     Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
 });
