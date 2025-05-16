@@ -54,4 +54,13 @@ class RolesController extends Controller
             'role' => $role
         ]);
     }
+
+    public function destroy($id)
+    {
+        $menu = Role::findOrFail($id);
+        $menu->delete(); // This will set deleted_at, not hard-delete
+    
+        return redirect()->route('addRole')->with('success', 'Role soft deleted successfully.');
+    }
+    
 }

@@ -59,25 +59,31 @@ class AuthController extends Controller
                     'email' => 'required|email',
                     'password' => 'required|min:6',
                 ],
-                $messages,
+                $messages
             );
 
-            // Attempt login
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            // Attempt login only if user is active (status = 1)
+            $credentials = [
+                'email' => $request->email,
+                'password' => $request->password,
+                'status' => 1, // Only allow active users
+            ];
+
+            if (Auth::attempt($credentials)) {
                 return redirect()->route('dashboard')->with('success', 'Login Successful!');
             }
 
-            // If login fails
-            return back()->with('error', 'Invalid email or password.');
+            return back()->with('error', 'Invalid email, password, or your account is inactive.');
         }
 
-        // if user already loggedin
-        if(auth()->check()) {
+        // if user already logged in
+        if (auth()->check()) {
             return redirect()->route('dashboard');
         }
 
         return view('welcome')->with('error', 'Invalid Request Method');
     }
+
 
     public function logout(Request $request)
     {
