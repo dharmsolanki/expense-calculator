@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('dashboard/add-user','index')->name('addUser');
         Route::match(['get', 'post'],'dashboard/create-user','create')->name('user.create');
         Route::match(['get', 'post'],'dashboard/edit-user/{id}','edit')->name('user.edit');
+        Route::delete('dashboard/delete-user/{id}','destroy')->name('user.destroy');
+        Route::post('dashboard/user/restore-user/{id}','restore')->name('user.restore');
     });
     
 

@@ -56,13 +56,20 @@
                                     </td>
                                     <td>{{ \Carbon\Carbon::parse($user->created_at)->format('d-m-Y') }}</td>
                                     <td>
-                                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    {{-- <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger btn-sm">Delete</button>
-                                    </form> --}}
-                                    </td>
+                                        @if ($user->trashed())
+                                            <form action="{{ route('user.restore', $user->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure you want to restore this user?');">
+                                                @csrf
+                                                <button class="btn btn-success btn-sm">Restore</button>
+                                            </form>
+                                        @else
+                                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        @endif
+                                    </td>                                    
                                 </tr>
                             @endforeach
                         </tbody>

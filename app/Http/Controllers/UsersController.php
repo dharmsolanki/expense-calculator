@@ -13,7 +13,7 @@ class UsersController extends Controller
 
     public function index(Request $request)
     {
-        $query = User::with('role');
+        $query = User::with('role')->withTrashed(); // Include soft deleted users
 
         // Apply filters if provided
         if ($request->filled('name')) {
@@ -32,7 +32,7 @@ class UsersController extends Controller
             $query->where('status', $request->status);
         }
 
-        $users = $query->get(); // Or use paginate() if needed
+        $users = $query->get(); // You can also paginate here if needed
         $roles = Role::get();
 
         return view("users.index", [
@@ -119,23 +119,39 @@ class UsersController extends Controller
                 'current_password' => 'required',
                 'new_password' => 'required|confirmed|min:6',
             ]);
-    
+
             $user = User::find(Auth::id());  // explicit fetch from DB
-    
+
             if (!Hash::check($validateData['current_password'], $user->password)) {
                 return back()->withErrors(['current_password' => 'Current password is incorrect'])->withInput();
             }
-    
+
             if (Hash::check($validateData['new_password'], $user->password)) {
                 return back()->withErrors(['new_password' => 'New password cannot be the same as the current password'])->withInput();
             }
-    
+
             $user->password = Hash::make($validateData['new_password']);
             $user->save();
-    
+
             return redirect()->route('dashboard')->with('success', 'Password changed successfully.');
         }
-    
+
         return view("users.change-password");
-    }    
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete(); // This will set deleted_at, not hard-delete
+
+        return redirect()->route('addUser')->with('success', 'User soft deleted successfully.');
+    }
+
+    public function restore($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        $user->restore();
+
+        return redirect()->route('addUser')->with('success', 'User restored successfully.');
+    }
 }
